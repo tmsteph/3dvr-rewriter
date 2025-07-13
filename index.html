@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rewriter – Civil Internet Editor</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>📝 Rewriter</h1>
+  <p>Paste a post, comment, or story and refine it.</p>
+
+  <div class="container">
+    <div class="editor">
+      <label>Original</label>
+      <textarea id="original" placeholder="Paste the original post here..."></textarea>
+    </div>
+    <div class="editor">
+      <label>Rewrite</label>
+      <textarea id="rewrite" placeholder="Your refined version..."></textarea>
+    </div>
+  </div>
+
+  <button onclick="save()">Save</button>
+  <div id="savedLink"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
