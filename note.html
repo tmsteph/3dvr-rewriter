@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Note</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <input id="title" placeholder="Note Title" />
+  <div class="container">
+    <div class="editor">
+      <label>Original</label>
+      <textarea id="original"></textarea>
+    </div>
+    <div class="editor">
+      <label>Rewrite</label>
+      <textarea id="rewrite"></textarea>
+    </div>
+  </div>
+  <button onclick="saveNote()">Save</button>
+  <script src="script.js"></script>
+  <script>
+    loadNote();
+  </script>
+</body>
+</html>
