@@ -1,32 +1,53 @@
-function save() {
-  const original = document.getElementById('original').value;
-  const rewrite = document.getElementById('rewrite').value;
+function getNotes() {
+  return JSON.parse(localStorage.getItem("rewriter-notes") || "[]");
+}
 
-  const data = {
-    original,
-    rewrite,
-    timestamp: new Date().toISOString()
-  };
+function saveNotes(notes) {
+  localStorage.setItem("rewriter-notes", JSON.stringify(notes));
+}
 
+function createNote() {
   const id = Date.now().toString();
-  localStorage.setItem(`rewrite-${id}`, JSON.stringify(data));
-
-  const link = `${location.origin}${location.pathname}#${id}`;
-  document.getElementById('savedLink').innerHTML = `
-    Saved! <a href="${link}">${link}</a>
-  `;
+  const notes = getNotes();
+  notes.push({ id, title: "Untitled", original: "", rewrite: "" });
+  saveNotes(notes);
+  location.href = `note.html?id=${id}`;
 }
 
-function load() {
-  const hash = location.hash.slice(1);
-  if (!hash) return;
-
-  const saved = localStorage.getItem(`rewrite-${hash}`);
-  if (!saved) return;
-
-  const data = JSON.parse(saved);
-  document.getElementById('original').value = data.original;
-  document.getElementById('rewrite').value = data.rewrite;
+function loadNotes() {
+  const notes = getNotes();
+  const list = document.getElementById("notesList");
+  notes.forEach(note => {
+    const li = document.createElement("li");
+    li.innerHTML = `<a href="note.html?id=${note.id}">${note.title}</a>`;
+    list.appendChild(li);
+  });
 }
 
-window.onload = load;
+function loadNote() {
+  const params = new URLSearchParams(location.search);
+  const id = params.get("id");
+  const notes = getNotes();
+  const note = notes.find(n => n.id === id);
+  if (!note) return;
+
+  document.getElementById("title").value = note.title;
+  document.getElementById("original").value = note.original;
+  document.getElementById("rewrite").value = note.rewrite;
+
+  window._currentNoteId = id;
+}
+
+function saveNote() {
+  const id = window._currentNoteId;
+  const notes = getNotes();
+  const note = notes.find(n => n.id === id);
+  if (!note) return;
+
+  note.title = document.getElementById("title").value;
+  note.original = document.getElementById("original").value;
+  note.rewrite = document.getElementById("rewrite").value;
+  saveNotes(notes);
+
+  alert("Saved!");
+}
